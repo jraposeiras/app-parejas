@@ -1,18 +1,50 @@
 // --- DATOS INICIALES ---
 // Lista completa de jugadores disponibles. Puedes añadir, quitar o modificar jugadores aquí.
-const todosLosJugadores = [
-    { nombre: "Chalu", edad: 46 },
-    { nombre: "Chus", edad: 54 },
-    { nombre: "David", edad: 49 },
-    { nombre: "Javier", edad: 53 },
-    { nombre: "Josito", edad: 42 },
-    { nombre: "Magin", edad: 54 },
-    { nombre: "Mateo", edad: 45 },
-    { nombre: "More", edad: 44 },
-    { nombre: "Nano", edad: 40 },
-    { nombre: "Nico", edad: 50 },
-    { nombre: "Toño", edad: 56 }
-];
+//const todosLosJugadores = [
+    //{ nombre: "Chalu", edad: 46 },
+    //{ nombre: "Chus", edad: 54 },
+    //{ nombre: "David", edad: 49 },
+    //{ nombre: "Javier", edad: 53 },
+    //{ nombre: "Josito", edad: 42 },
+    //{ nombre: "Magin", edad: 54 },
+    //{ nombre: "Mateo", edad: 45 },
+    //{ nombre: "More", edad: 44 },
+    //{ nombre: "Nano", edad: 40 },
+    //{ nombre: "Nico", edad: 50 },
+    //{ nombre: "Toño", edad: 56 }
+//];
+
+// --- CONFIGURACIÓN ---
+// Sustituye este enlace por tu URL de 
+
+ (Publicar como CSV)
+const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQMxY9P41CAO7r6k0uqMiQudZk0R8c0nXfC3iFxH6ZYoQcwUqmsc1Y5GdzoCfAfoHqgx9rE-VsfCZxL/pub?gid=819684195&single=true&output=csv";
+
+// --- VARIABLES GLOBALES ---
+let todosLosJugadores = [];
+let parejas = [];
+
+/**
+ * Carga los datos desde Google Sheets e inicializa la aplicación
+ */
+async function inicializarApp() {
+    try {
+        const respuesta = await fetch(urlCSV);
+        if (!respuesta.ok) throw new Error("No se pudo acceder al CSV");
+        
+        const contenidoTexto = await respuesta.text();
+        
+        // Convertimos el CSV a objetos (Asumimos: Columna A = Nombre, Columna B = Puntos)
+        const filas = contenidoTexto.split("\n").slice(1); // Omitir cabecera
+        todosLosJugadores = filas.map(fila => {
+            const columnas = fila.split(",");
+            
+
+            return {
+                nombre: columnas[0]?.trim() || "Sin nombre",
+                edad: parseInt(columnas[1]) || 0 // Aquí 'edad' actúa como 'puntos'
+            };
+        }).filter(j => j.nombre !== "Sin nombre");
 
 // Estado inicial: formamos las 5 primeras parejas con los 10 primeros jugadores.
 let parejas = [
@@ -147,3 +179,4 @@ function resaltarDuplicados() {
 // --- INICIO DE LA APLICACIÓN ---
 // Llamamos a la función por primera vez para que dibuje la tabla inicial.
 renderizarTabla();
+
