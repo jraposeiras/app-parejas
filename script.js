@@ -1,7 +1,7 @@
 // --- DATOS INICIALES ---
 // Lista completa de jugadores disponibles. Puedes añadir, quitar o modificar jugadores aquí.
 const todosLosJugadores = [
-    { nombre: "Chalu", edad: 46 },
+    { nombre: "Chalu", edad: 56 },
     { nombre: "Chus", edad: 54 },
     { nombre: "David", edad: 49 },
     { nombre: "Javier", edad: 53 },
